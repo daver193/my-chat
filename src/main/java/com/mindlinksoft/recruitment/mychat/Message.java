@@ -31,5 +31,7 @@ public final class Message {
         this.content = content;
         this.timestamp = timestamp;
         this.senderId = senderId;
+
+        System.out.println("ADDED: " + content);
     }
 }
