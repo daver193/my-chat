@@ -14,12 +14,16 @@ public final class ConversationExporterConfiguration {
      */
     private String outputFilePath;
 
+    /**
+     * Gets a string with all the chosen filters.
+     */
     private String inputFilters;
 
     /**
      * Initializes a new instance of the {@link ConversationExporterConfiguration} class.
      * @param inputFilePath The input file path.
      * @param outputFilePath The output file path.
+     * @param inputFilters A string with all the chosen filters, separated by comma from each other.
      */
     public ConversationExporterConfiguration(String inputFilePath, String outputFilePath, String inputFilters) {
         this.inputFilePath = inputFilePath;
