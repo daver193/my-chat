@@ -4,6 +4,7 @@ import com.google.gson.*;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.SocketException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,23 +79,37 @@ public class ConversationExporter {
      * @throws Exception Thrown when something bad happens.
      */
     public void writeConversation(Conversation conversation, String outputFilePath) throws Exception {
-        // TODO: Do we need both to be resources, or will buffered writer close the stream?
-        try (OutputStream os = new FileOutputStream(outputFilePath, true);
-             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os))) {
 
-            // TODO: Maybe reuse this? Make it more testable...
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Instant.class, new InstantSerializer());
+        try(FileWriter writer = new FileWriter(outputFilePath))
+        {
+            Gson json = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .registerTypeAdapter(Instant.class, new InstantSerializer())
+                    .create();
 
-            Gson g = gsonBuilder.create();
+            writer.write(json.toJson(conversation.name) + "\n");
+            for (Message ms : conversation.messages){
+                writer.write(json.toJson(ms.timestamp + " " + ms.senderId + " " + ms.content) + "\n");
+            }
 
-            bw.write(g.toJson(conversation));
-        } catch (FileNotFoundException e) {
-            // TODO: Maybe include more information?
-            throw new IllegalArgumentException("The file was not found.");
-        } catch (IOException e) {
-            // TODO: Should probably throw different exception to be more meaningful :/
-            throw new Exception("Something went wrong");
+            writer.close();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("The file " + outputFilePath + " was not found.");
+        } catch (EOFException e){
+            e.printStackTrace();
+            throw new Exception("End of the file " + outputFilePath + " reached.");
+        } catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            throw new Exception("The file " + outputFilePath + " has unsupported encoding.");
+        } catch (SocketException e){
+            e.printStackTrace();
+            throw new Exception("The socket connection with the file " + outputFilePath + " terminated unexpectedly.");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            throw new Exception("An unknown error occured for the file "+ outputFilePath);
         }
     }
 
