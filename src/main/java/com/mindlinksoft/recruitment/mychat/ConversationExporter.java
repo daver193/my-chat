@@ -30,9 +30,9 @@ public class ConversationExporter {
 
 
 
-        if (configuration.inputFilters != null){
+        if (configuration.getInputFilters() != null){
 
-            List<String> filterList = Arrays.asList(configuration.inputFilters.split(","));
+            List<String> filterList = Arrays.asList(configuration.getInputFilters().split(","));
 
             System.out.println(filterList);
 
@@ -54,7 +54,7 @@ public class ConversationExporter {
 
         }
 
-        exporter.exportConversation(configuration.inputFilePath, configuration.outputFilePath);
+        exporter.exportConversation(configuration.getInputFilePath(), configuration.getOutputFilePath());
     }
 
     /**
@@ -87,9 +87,9 @@ public class ConversationExporter {
                     .registerTypeAdapter(Instant.class, new InstantSerializer())
                     .create();
 
-            writer.write(json.toJson(conversation.name) + "\n");
-            for (Message ms : conversation.messages){
-                writer.write(json.toJson(ms.timestamp + " " + ms.senderId + " " + ms.content) + "\n");
+            writer.write(json.toJson(conversation.getName()) + "\n");
+            for (Message ms : conversation.getMessages()){
+                writer.write(json.toJson(ms.getTimestamp() + " " + ms.getTimestamp() + " " + ms.getContent()) + "\n");
             }
 
             writer.close();
@@ -109,7 +109,7 @@ public class ConversationExporter {
         }
         catch (IOException e) {
             e.printStackTrace();
-            throw new Exception("An unknown error occured for the file "+ outputFilePath);
+            throw new Exception("An unknown error occurred for the file "+ outputFilePath);
         }
     }
 

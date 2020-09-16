@@ -9,17 +9,17 @@ public final class Message {
     /**
      * The message content.
      */
-    public String content;
+    private String content;
 
     /**
      * The message timestamp.
      */
-    public Instant timestamp;
+    private Instant timestamp;
 
     /**
      * The message sender.
      */
-    public String senderId;
+    private String senderId;
 
     /**
      * Initializes a new instance of the {@link Message} class.
@@ -33,5 +33,29 @@ public final class Message {
         this.senderId = senderId;
 
         System.out.println("ADDED: " + content);
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 }

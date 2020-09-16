@@ -7,14 +7,14 @@ public final class ConversationExporterConfiguration {
     /**
      * Gets the input file path.
      */
-    public String inputFilePath;
+    private String inputFilePath;
 
     /**
      * Gets the output file path.
      */
-    public String outputFilePath;
+    private String outputFilePath;
 
-    public String inputFilters;
+    private String inputFilters;
 
     /**
      * Initializes a new instance of the {@link ConversationExporterConfiguration} class.
@@ -25,5 +25,17 @@ public final class ConversationExporterConfiguration {
         this.inputFilePath = inputFilePath;
         this.outputFilePath = outputFilePath;
         this.inputFilters = inputFilters;
+    }
+
+    public String getInputFilePath() {
+        return inputFilePath;
+    }
+
+    public String getOutputFilePath() {
+        return outputFilePath;
+    }
+
+    public String getInputFilters() {
+        return inputFilters;
     }
 }
