@@ -148,23 +148,28 @@ public class ConversationExporter {
                         msg = msg.concat(" " + split[i]);
                     }
                 }
-                //System.out.println("THE MESSAGE: " + msg);
-
 
                 if (!filterHandler.filterByKeyword(keyword, msg)){
                     continue;
                 }
 
-
                 messages.add(new Message(Instant.ofEpochSecond(Long.parseUnsignedLong(split[0])), split[1], msg));
-
             }
 
             return new Conversation(conversationName, messages);
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("The file: " + inputFilePath + "was not found.");
-        } catch (IOException e) {
-            throw new Exception("Something went wrong");
+        } catch (EOFException e){
+            e.printStackTrace();
+            throw new Exception("End of the file " + inputFilePath + " reached.");
+        } catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            throw new UnsupportedEncodingException("The file " + inputFilePath + " has unsupported encoding.");
+        } catch (SocketException e){
+            e.printStackTrace();
+            throw new SocketException("The socket connection with the file " + inputFilePath + " terminated unexpectedly.");
+        }catch (IOException e) {
+            throw new Exception("An unknown error occurred for the file "+ inputFilePath);
         }
     }
 
